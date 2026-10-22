@@ -13,4 +13,13 @@ export interface ApiDefinition {
     destroy: typeof routes['session.destroy']
   }
   dashboard: typeof routes['dashboard']
+  inbox: typeof routes['inbox']
+  customers: typeof routes['customers']
+  notifications: typeof routes['notifications']
+  settings: {
+    general: typeof routes['settings.general']
+    members: typeof routes['settings.members']
+    notifications: typeof routes['settings.notifications']
+    security: typeof routes['settings.security']
+  }
 }

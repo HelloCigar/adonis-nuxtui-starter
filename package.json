@@ -41,6 +41,7 @@
     "@adonisjs/eslint-config": "^3.1.0",
     "@adonisjs/prettier-config": "^1.5.0",
     "@adonisjs/tsconfig": "^2.0.0",
+    "@iconify-json/lucide": "^1.2.147",
     "@japa/assert": "^4.2.0",
     "@japa/browser-client": "^2.3.0",
     "@japa/plugin-adonisjs": "^5.2.0",
@@ -71,16 +72,23 @@
     "@adonisjs/vite": "^6.0.2",
     "@inertiajs/core": "^3.7.1",
     "@inertiajs/vue3": "^3.7.1",
+    "@internationalized/date": "^3.12.4",
+    "@nuxt/ui": "^4.12.0",
+    "@tanstack/charts": "^1.1.0",
+    "@tanstack/table-core": "^8.21.3",
     "@tuyau/core": "^1.2.2",
     "@vinejs/vine": "^4.4.0",
     "@vue/server-renderer": "^3.5.43",
+    "@vueuse/core": "^14.4.0",
     "better-sqlite3": "^13.0.3",
+    "date-fns": "^4.4.0",
     "edge.js": "^6.5.1",
-    "lucide-vue-next": "^1.0.0",
     "luxon": "^3.7.2",
     "reflect-metadata": "^0.2.2",
+    "scule": "^1.3.0",
+    "tailwindcss": "^4.3.3",
     "vue": "^3.5.43",
-    "vue-sonner": "^2.0.9"
+    "zod": "^4.6.7"
   },
   "hotHook": {
     "boundaries": [

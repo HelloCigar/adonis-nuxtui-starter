@@ -1,57 +1,61 @@
 <script setup lang="ts">
+import * as z from 'zod'
+import { useTemplateRef } from 'vue'
+import { Head } from '@inertiajs/vue3'
+import { Link } from '@adonisjs/inertia/vue'
+import type { AuthFormField } from '@nuxt/ui'
+import { urlFor } from '~/client'
 import AuthLayout from '~/layouts/auth.vue'
-import { Form, Link } from '@adonisjs/inertia/vue'
+import { useInertiaAuthForm, type AuthFormInstance } from '~/composables/use_inertia_auth_form'
+
+defineOptions({ layout: AuthLayout })
+
+const fields: AuthFormField[] = [
+  {
+    name: 'email',
+    type: 'email',
+    label: 'Email',
+    placeholder: 'you@example.com',
+    autocomplete: 'username',
+    required: true,
+  },
+  {
+    name: 'password',
+    type: 'password',
+    label: 'Password',
+    placeholder: 'Enter your password',
+    autocomplete: 'current-password',
+    required: true,
+  },
+]
+
+const schema = z.object({
+  email: z.email({ error: 'Invalid email' }),
+  password: z.string({ error: 'Password is required' }).min(1, 'Password is required'),
+})
+
+type Schema = z.output<typeof schema>
+
+const authForm = useTemplateRef<AuthFormInstance>('authForm')
+const { processing, submit } = useInertiaAuthForm<Schema>(urlFor('session.store'), authForm)
 </script>
 
 <template>
-  <AuthLayout>
-    <h1 class="auth__title">Welcome back</h1>
-    <p class="auth__sub">Sign in to continue building.</p>
+  <Head title="Sign in" />
 
-    <Form v-slot="{ processing, errors }" route="session.store">
-      <div class="auth__form">
-        <div class="field">
-          <label class="field__label" for="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            class="field__input"
-            autocomplete="username"
-            placeholder="you@example.com"
-            :aria-invalid="errors.email ? 'true' : 'false'"
-          />
-          <span v-if="errors.email" class="field__error">{{ errors.email }}</span>
-        </div>
-
-        <div class="field">
-          <label class="field__label" for="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            class="field__input"
-            autocomplete="current-password"
-            placeholder="••••••••"
-            :aria-invalid="errors.password ? 'true' : 'false'"
-          />
-          <span v-if="errors.password" class="field__error">{{ errors.password }}</span>
-        </div>
-
-        <button
-          type="submit"
-          class="btn btn--primary btn--block"
-          :disabled="processing"
-          :style="{ marginTop: '4px' }"
-        >
-          {{ processing ? 'One moment…' : 'Sign in' }}
-        </button>
-      </div>
-    </Form>
-
-    <p class="auth__foot">
-      New here?
-      <Link route="new_account.create" class="il">Create an account</Link>
-    </p>
-  </AuthLayout>
+  <UAuthForm
+    ref="authForm"
+    :schema="schema"
+    :fields="fields"
+    :loading="processing"
+    icon="i-lucide-lock"
+    title="Welcome back"
+    :submit="{ label: 'Sign in', block: true }"
+    @submit="submit"
+  >
+    <template #description>
+      Don't have an account?
+      <Link route="new_account.create" class="text-primary font-medium">Sign up</Link>.
+    </template>
+  </UAuthForm>
 </template>

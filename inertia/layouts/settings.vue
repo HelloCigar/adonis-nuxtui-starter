@@ -1,38 +1,61 @@
 <script setup lang="ts">
-import Page from '~/components/page.vue'
-import NavLink, { type NavItem } from '~/components/nav_link.vue'
+import type { NavigationMenuItem } from '@nuxt/ui'
+import { urlFor } from '~/client'
 
-/**
- * The pages of the settings area, listed in the sidebar. Register a route
- * for each page and add it here, for example:
- *
- * `{ label: 'Profile', route: 'settings.profile', icon: User }`
- *
- * Each settings page renders inside the app layout and this layout:
- *
- * `<AppLayout><SettingsLayout>…</SettingsLayout></AppLayout>`
- */
-const items: NavItem[] = []
+const links = [
+  [
+    {
+      label: 'General',
+      icon: 'i-lucide-user',
+      to: urlFor('settings.general'),
+      exact: true,
+    },
+    {
+      label: 'Members',
+      icon: 'i-lucide-users',
+      to: urlFor('settings.members'),
+    },
+    {
+      label: 'Notifications',
+      icon: 'i-lucide-bell',
+      to: urlFor('settings.notifications'),
+    },
+    {
+      label: 'Security',
+      icon: 'i-lucide-shield',
+      to: urlFor('settings.security'),
+    },
+  ],
+  [
+    {
+      label: 'Documentation',
+      icon: 'i-lucide-book-open',
+      to: 'https://ui.nuxt.com/docs/getting-started/installation/vue',
+      target: '_blank',
+    },
+  ],
+] satisfies NavigationMenuItem[][]
 </script>
 
 <template>
-  <Page title="Settings" description="Manage your account settings and preferences.">
-    <div class="sidebar-layout">
-      <nav class="sidebar-layout__nav" aria-label="Settings">
-        <NavLink
-          v-for="item in items"
-          :key="item.label"
-          :route="item.route"
-          exact
-          class="sidebar-layout__item"
-        >
-          <component :is="item.icon" v-if="item.icon" :size="16" />
-          {{ item.label }}
-        </NavLink>
-      </nav>
-      <div class="sidebar-layout__content panel">
+  <UDashboardPanel id="settings" :ui="{ body: 'lg:py-12' }">
+    <template #header>
+      <UDashboardNavbar title="Settings">
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
+
+      <UDashboardToolbar>
+        <!-- NOTE: The `-mx-1` class is used to align with the `DashboardSidebarCollapse` button here. -->
+        <UNavigationMenu :items="links" highlight class="-mx-1 flex-1" />
+      </UDashboardToolbar>
+    </template>
+
+    <template #body>
+      <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 w-full lg:max-w-2xl mx-auto">
         <slot />
       </div>
-    </div>
-  </Page>
+    </template>
+  </UDashboardPanel>
 </template>

@@ -1,24 +1,16 @@
 <script setup lang="ts">
-import MarketingLayout from '~/layouts/marketing.vue'
+import { Head } from '@inertiajs/vue3'
 </script>
 
 <template>
-  <MarketingLayout>
-    <div class="home">
-      <article class="prose-card">
-        <div class="pc-top">
-          <span class="pc-status mono tag" :style="{ color: 'var(--subtle)' }">
-            <span class="dot" /> 404
-          </span>
-        </div>
-        <div class="pc-lead">
-          <span>Not found.</span>
-          <em>That route hasn't been built yet.</em>
-        </div>
-        <p class="pc-para">
-          The page you tried to reach doesn't exist. Check the URL or head back home.
-        </p>
-      </article>
-    </div>
-  </MarketingLayout>
+  <Head title="Page not found" />
+
+  <UError
+    :error="{
+      statusCode: 404,
+      statusMessage: 'Page not found',
+      message: 'The page you are looking for does not exist.',
+    }"
+    redirect="/"
+  />
 </template>

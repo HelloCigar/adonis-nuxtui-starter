@@ -1,11 +1,31 @@
 <!DOCTYPE html>
-<html data-theme="{{ request.plainCookie('app_theme', { defaultValue: 'light', encoded: false }) }}">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="preconnect" href="https://fonts.bunny.net" />
+    <link href="https://fonts.bunny.net/css?family=public-sans:400,500,600,700" rel="stylesheet" />
     <title data-inertia>
       AdonisJS
     </title>
+
+    <style>
+      html { background-color: #ffffff }
+      html.dark { background-color: #18181b }
+    </style>
+    {{-- Apply the stored color mode before first paint (same key as @vueuse/core useColorMode) --}}
+    <script>
+      (function () {
+        var mode = localStorage.getItem('vueuse-color-scheme') || 'auto'
+        var dark = mode === 'dark' || (mode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        if (dark) {
+          document.documentElement.classList.add('dark')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18181b')
+        }
+      })()
+    </script>
 
     @vite(['inertia/app.ts'])
     @inertiaHead()
@@ -13,7 +33,7 @@
   </head>
 
   <body>
-    @inertia()
+    @inertia({ class: 'isolate' })
   </body>
 
 </html>

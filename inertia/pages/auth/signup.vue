@@ -1,87 +1,90 @@
 <script setup lang="ts">
+import * as z from 'zod'
+import { useTemplateRef } from 'vue'
+import { Head } from '@inertiajs/vue3'
+import { Link } from '@adonisjs/inertia/vue'
+import type { AuthFormField } from '@nuxt/ui'
+import { urlFor } from '~/client'
 import AuthLayout from '~/layouts/auth.vue'
-import { Form, Link } from '@adonisjs/inertia/vue'
+import { useInertiaAuthForm, type AuthFormInstance } from '~/composables/use_inertia_auth_form'
+
+defineOptions({ layout: AuthLayout })
+
+const fields: AuthFormField[] = [
+  {
+    name: 'fullName',
+    type: 'text',
+    label: 'Full name',
+    placeholder: 'Ada Lovelace',
+    autocomplete: 'name',
+  },
+  {
+    name: 'email',
+    type: 'email',
+    label: 'Email',
+    placeholder: 'you@example.com',
+    autocomplete: 'email',
+    required: true,
+  },
+  {
+    name: 'password',
+    type: 'password',
+    label: 'Password',
+    placeholder: 'At least 8 characters',
+    autocomplete: 'new-password',
+    required: true,
+  },
+  {
+    name: 'passwordConfirmation',
+    type: 'password',
+    label: 'Confirm password',
+    placeholder: 'Repeat your password',
+    autocomplete: 'new-password',
+    required: true,
+  },
+]
+
+/**
+ * Mirrors `signupValidator` in app/validators/user.ts for instant feedback.
+ * The server remains the source of truth (e.g. for the unique email check).
+ */
+const schema = z
+  .object({
+    fullName: z.string().optional(),
+    email: z.email({ error: 'Invalid email' }),
+    password: z
+      .string({ error: 'Password is required' })
+      .min(8, 'Must be at least 8 characters')
+      .max(32, 'Must be at most 32 characters'),
+    passwordConfirmation: z.string({ error: 'Please confirm your password' }),
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: 'Passwords do not match',
+    path: ['passwordConfirmation'],
+  })
+
+type Schema = z.output<typeof schema>
+
+const authForm = useTemplateRef<AuthFormInstance>('authForm')
+const { processing, submit } = useInertiaAuthForm<Schema>(urlFor('new_account.store'), authForm)
 </script>
 
 <template>
-  <AuthLayout>
-    <h1 class="auth__title">Create your account</h1>
-    <p class="auth__sub">Start building with the starter kit.</p>
+  <Head title="Create an account" />
 
-    <Form v-slot="{ processing, errors }" route="new_account.store">
-      <div class="auth__form">
-        <div class="field">
-          <label class="field__label" for="fullName">Full name</label>
-          <input
-            id="fullName"
-            name="fullName"
-            type="text"
-            class="field__input"
-            autocomplete="name"
-            placeholder="Ada Lovelace"
-            :aria-invalid="errors.fullName ? 'true' : 'false'"
-          />
-          <span v-if="errors.fullName" class="field__error">{{ errors.fullName }}</span>
-        </div>
-
-        <div class="field">
-          <label class="field__label" for="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            class="field__input"
-            autocomplete="email"
-            placeholder="you@example.com"
-            :aria-invalid="errors.email ? 'true' : 'false'"
-          />
-          <span v-if="errors.email" class="field__error">{{ errors.email }}</span>
-        </div>
-
-        <div class="field">
-          <label class="field__label" for="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            class="field__input"
-            autocomplete="new-password"
-            placeholder="••••••••"
-            :aria-invalid="errors.password ? 'true' : 'false'"
-          />
-          <span v-if="errors.password" class="field__error">{{ errors.password }}</span>
-        </div>
-
-        <div class="field">
-          <label class="field__label" for="passwordConfirmation">Confirm password</label>
-          <input
-            id="passwordConfirmation"
-            name="passwordConfirmation"
-            type="password"
-            class="field__input"
-            autocomplete="new-password"
-            placeholder="••••••••"
-            :aria-invalid="errors.passwordConfirmation ? 'true' : 'false'"
-          />
-          <span v-if="errors.passwordConfirmation" class="field__error">
-            {{ errors.passwordConfirmation }}
-          </span>
-        </div>
-
-        <button
-          type="submit"
-          class="btn btn--primary btn--block"
-          :disabled="processing"
-          :style="{ marginTop: '4px' }"
-        >
-          {{ processing ? 'One moment…' : 'Create account' }}
-        </button>
-      </div>
-    </Form>
-
-    <p class="auth__foot">
+  <UAuthForm
+    ref="authForm"
+    :schema="schema"
+    :fields="fields"
+    :loading="processing"
+    icon="i-lucide-user-plus"
+    title="Create your account"
+    :submit="{ label: 'Create account', block: true }"
+    @submit="submit"
+  >
+    <template #description>
       Already have an account?
-      <Link route="session.create" class="il">Sign in</Link>
-    </p>
-  </AuthLayout>
+      <Link route="session.create" class="text-primary font-medium">Sign in</Link>.
+    </template>
+  </UAuthForm>
 </template>

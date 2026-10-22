@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /// <reference path="../manifest.d.ts" />
 
-import type { ExtractBody, ExtractErrorResponse, ExtractQuery, ExtractQueryForGet, ExtractResponse } from '@tuyau/core/types'
+import type { ExtractBody, ExtractErrorResponse, ExtractQuery, ExtractQueryForGet, ExtractRawResponse, ExtractResponse } from '@tuyau/core/types'
 import type { InferInput, SimpleError } from '@vinejs/vine/types'
 
 export type ParamValue = string | number | bigint | boolean
@@ -17,6 +17,7 @@ export interface Registry {
       query: {}
       response: unknown
       errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
     }
   }
   'new_account.create': {
@@ -29,6 +30,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['create']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['create']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['create']>>>
     }
   }
   'new_account.store': {
@@ -41,6 +43,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/user').signupValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'session.create': {
@@ -53,6 +56,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['create']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['create']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/session_controller').default['create']>>>
     }
   }
   'session.store': {
@@ -65,6 +69,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/user').loginValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'dashboard': {
@@ -77,6 +82,98 @@ export interface Registry {
       query: {}
       response: unknown
       errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'inbox': {
+    methods: ["GET","HEAD"]
+    pattern: '/inbox'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/inbox_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/inbox_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/inbox_controller').default['index']>>>
+    }
+  }
+  'customers': {
+    methods: ["GET","HEAD"]
+    pattern: '/customers'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/customers_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/customers_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/customers_controller').default['index']>>>
+    }
+  }
+  'notifications': {
+    methods: ["GET","HEAD"]
+    pattern: '/notifications'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/notifications_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/notifications_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/notifications_controller').default['index']>>>
+    }
+  }
+  'settings.general': {
+    methods: ["GET","HEAD"]
+    pattern: '/settings'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'settings.members': {
+    methods: ["GET","HEAD"]
+    pattern: '/settings/members'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/members_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/members_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/members_controller').default['index']>>>
+    }
+  }
+  'settings.notifications': {
+    methods: ["GET","HEAD"]
+    pattern: '/settings/notifications'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'settings.security': {
+    methods: ["GET","HEAD"]
+    pattern: '/settings/security'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
     }
   }
   'session.destroy': {
@@ -89,6 +186,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
     }
   }
 }

@@ -4,6 +4,10 @@
  */
 
 export const controllers = {
+  Customers: () => import('#controllers/customers_controller'),
+  Inbox: () => import('#controllers/inbox_controller'),
+  Members: () => import('#controllers/members_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
+  Notifications: () => import('#controllers/notifications_controller'),
   Session: () => import('#controllers/session_controller'),
 }
