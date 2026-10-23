@@ -1,6 +1,6 @@
 import { ref, type Ref } from 'vue'
-import { router } from '@inertiajs/vue3'
-import type { FormError, FormSubmitEvent } from '@nuxt/ui'
+import type { FormError } from '@nuxt/ui'
+import type { VisitOptions } from '@inertiajs/core'
 
 /**
  * Minimal shape of the <UAuthForm> instance we interact with.
@@ -10,27 +10,30 @@ export interface AuthFormInstance {
 }
 
 /**
- * Bridges <UAuthForm> and an AdonisJS endpoint: the validated form data is
- * posted with the Inertia router, and VineJS validation errors returned by
- * the server are displayed on the matching form fields.
+ * Bridges <UAuthForm> and an AdonisJS endpoint. Pass the returned `visitOptions`
+ * to a `useRouter()` visit: they track the request state and display the VineJS
+ * validation errors returned by the server on the matching form fields.
+ *
+ * @example
+ * const router = useRouter()
+ * router.post({ route: 'session.store' }, event.data, visitOptions)
  */
-export function useInertiaAuthForm<T extends Record<string, any>>(
-  url: string,
-  authForm: Readonly<Ref<AuthFormInstance | null>>
-) {
+export function useInertiaAuthForm(authForm: Readonly<Ref<AuthFormInstance | null>>) {
   const processing = ref(false)
 
-  function submit(event: FormSubmitEvent<T>) {
-    router.post(url, event.data, {
-      onStart: () => (processing.value = true),
-      onFinish: () => (processing.value = false),
-      onError: (errors) => {
-        authForm.value?.formRef?.setErrors(
-          Object.entries(errors).map(([name, message]) => ({ name, message: String(message) }))
-        )
-      },
-    })
-  }
+  const visitOptions = {
+    onStart: () => {
+      processing.value = true
+    },
+    onFinish: () => {
+      processing.value = false
+    },
+    onError: (errors) => {
+      authForm.value?.formRef?.setErrors(
+        Object.entries(errors).map(([name, message]) => ({ name, message: String(message) }))
+      )
+    },
+  } satisfies Partial<VisitOptions>
 
-  return { processing, submit }
+  return { processing, visitOptions }
 }

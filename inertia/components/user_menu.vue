@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { router, usePage } from '@inertiajs/vue3'
+import { usePage } from '@inertiajs/vue3'
+import { useRouter } from '@adonisjs/inertia/vue'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { useColorMode } from '@vueuse/core'
 import { urlFor } from '~/client'
@@ -34,6 +35,7 @@ const colors = [
 const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone', 'taupe', 'mauve', 'mist', 'olive']
 
 const page = usePage()
+const router = useRouter()
 
 /**
  * The authenticated user is shared with every page by the Inertia middleware
@@ -50,7 +52,7 @@ const user = computed(() => {
 })
 
 function logout() {
-  router.post(urlFor('session.destroy'))
+  router.post({ route: 'session.destroy' })
 }
 
 const items = computed<DropdownMenuItem[][]>(() => [

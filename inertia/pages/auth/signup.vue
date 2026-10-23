@@ -2,9 +2,8 @@
 import * as z from 'zod'
 import { useTemplateRef } from 'vue'
 import { Head } from '@inertiajs/vue3'
-import { Link } from '@adonisjs/inertia/vue'
-import type { AuthFormField } from '@nuxt/ui'
-import { urlFor } from '~/client'
+import { Link, useRouter } from '@adonisjs/inertia/vue'
+import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
 import AuthLayout from '~/layouts/auth.vue'
 import { useInertiaAuthForm, type AuthFormInstance } from '~/composables/use_inertia_auth_form'
 
@@ -50,7 +49,10 @@ const fields: AuthFormField[] = [
  */
 const schema = z
   .object({
-    fullName: z.string().optional(),
+    fullName: z
+      .string()
+      .optional()
+      .transform((value) => value || null),
     email: z.email({ error: 'Invalid email' }),
     password: z
       .string({ error: 'Password is required' })
@@ -66,7 +68,12 @@ const schema = z
 type Schema = z.output<typeof schema>
 
 const authForm = useTemplateRef<AuthFormInstance>('authForm')
-const { processing, submit } = useInertiaAuthForm<Schema>(urlFor('new_account.store'), authForm)
+const router = useRouter()
+const { processing, visitOptions } = useInertiaAuthForm(authForm)
+
+function submit(event: FormSubmitEvent<Schema>) {
+  router.post({ route: 'new_account.store' }, event.data, visitOptions)
+}
 </script>
 
 <template>

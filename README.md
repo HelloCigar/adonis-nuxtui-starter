@@ -52,11 +52,11 @@ start/routes.ts         All routes. Dashboard routes are behind the auth middlew
 
 ## How it fits together
 
-- **Routing:** AdonisJS owns routing. Pages pick their layout with `defineOptions({ layout: DashboardLayout })` (settings pages use `[DashboardLayout, SettingsLayout]`), so the sidebar persists across navigations. Links use `urlFor('route.name')` or `<Link route="...">` from `@adonisjs/inertia/vue`, so they are type-checked against `start/routes.ts`.
+- **Routing:** AdonisJS owns routing. Pages pick their layout with `defineOptions({ layout: DashboardLayout })` (settings pages use `[DashboardLayout, SettingsLayout]`), so the sidebar persists across navigations. Everything references named routes from `start/routes.ts` and is type-checked: `<Link route="...">` for links, `useRouter()` from `@adonisjs/inertia/vue` for programmatic visits and form posts (`router.post({ route: 'session.store' }, data)`, which also types the request body against the route's validator), and `urlFor('...')` for the plain URLs that Nuxt UI menu items need.
 - **Nuxt UI + Inertia:** `vite.config.ts` sets `router: 'inertia'`, which makes `ULink`, `UButton` and `UNavigationMenu` render Inertia links and compute their active state from the current page URL.
 - **Auto-imports:** Nuxt UI components (`UButton`, `UDashboardPanel`, ...) and composables (`useToast`, `defineShortcuts`, ...) are auto-imported. Your own components and composables are imported explicitly.
 - **Icons:** Lucide icons are bundled at build time from `@iconify-json/lucide` (`icon.clientBundle.scan`), so nothing is fetched from the Iconify API at runtime. Install another `@iconify-json/*` collection to use its icons.
-- **Auth forms:** `useInertiaAuthForm` posts the `UAuthForm` data with the Inertia router and maps VineJS errors back onto the form fields. Invalid credentials and other flash errors show up as toasts.
+- **Auth forms:** the pages post the `UAuthForm` data with `useRouter().post()`, and `useInertiaAuthForm` provides the visit options that track the request and map VineJS errors back onto the form fields. Invalid credentials and other flash errors show up as toasts.
 - **Page props:** controllers pass props with `inertia.render('page', props)`, and `npm run typecheck` checks them against each page's `defineProps`. Keep prop types as JSON-friendly `type` aliases (see `inertia/types/dashboard.d.ts`), because interfaces don't satisfy the serializable-props constraint.
 - **Color mode:** handled by `@vueuse/core`'s `useColorMode` (Light/Dark is in the user menu). `resources/views/inertia_layout.edge` applies the saved mode before first paint.
 
