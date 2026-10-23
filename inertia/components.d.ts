@@ -12,7 +12,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     UApp: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/App.vue')['default']
-    UAuthForm: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/AuthForm.vue')['default']
     UAvatar: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/Avatar.vue')['default']
     UBadge: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/Badge.vue')['default']
     UButton: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/Button.vue')['default']
@@ -41,8 +40,10 @@ declare module 'vue' {
     UPageCard: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/PageCard.vue')['default']
     UPageGrid: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/PageGrid.vue')['default']
     UPagination: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/Pagination.vue')['default']
+    UPinInput: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/PinInput.vue')['default']
     UPopover: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/Popover.vue')['default']
     USelect: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/Select.vue')['default']
+    USelectMenu: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/SelectMenu.vue')['default']
     USeparator: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/Separator.vue')['default']
     USlideover: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/Slideover.vue')['default']
     USwitch: typeof import('./../node_modules/@nuxt/ui/dist/runtime/components/Switch.vue')['default']

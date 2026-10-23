@@ -4,7 +4,7 @@ A full-stack starter built from the official [AdonisJS](https://docs.adonisjs.co
 
 - **Backend:** AdonisJS 7, Lucid ORM (SQLite), session auth, VineJS validation
 - **Frontend:** Inertia 3 + Vue 3, Nuxt UI 4 (Tailwind CSS 4), Tuyau typed routes
-- **Auth:** login and signup pages built with `UAuthForm`, validated on the client with Zod and on the server with VineJS
+- **Auth:** login and signup pages built with an `AuthForm` component (Nuxt UI's `UAuthForm` ported to the AdonisJS `<Form>`), validated on the server with VineJS
 
 ## Getting started
 
@@ -45,7 +45,7 @@ inertia/
     auth.vue            Centered card for login/signup
   pages/                One Vue file per Inertia page
   components/           Dashboard template components
-  composables/          use_dashboard (shortcuts), use_inertia_auth_form, use_flash_toasts
+  composables/          use_dashboard (shortcuts), use_flash_toasts
   types/dashboard.d.ts  Types shared by pages and controllers
 start/routes.ts         All routes. Dashboard routes are behind the auth middleware.
 ```
@@ -56,7 +56,7 @@ start/routes.ts         All routes. Dashboard routes are behind the auth middlew
 - **Nuxt UI + Inertia:** `vite.config.ts` sets `router: 'inertia'`, which makes `ULink`, `UButton` and `UNavigationMenu` render Inertia links and compute their active state from the current page URL.
 - **Auto-imports:** Nuxt UI components (`UButton`, `UDashboardPanel`, ...) and composables (`useToast`, `defineShortcuts`, ...) are auto-imported. Your own components and composables are imported explicitly.
 - **Icons:** Lucide icons are bundled at build time from `@iconify-json/lucide` (`icon.clientBundle.scan`), so nothing is fetched from the Iconify API at runtime. Install another `@iconify-json/*` collection to use its icons.
-- **Auth forms:** the pages post the `UAuthForm` data with `useRouter().post()`, and `useInertiaAuthForm` provides the visit options that track the request and map VineJS errors back onto the form fields. Invalid credentials and other flash errors show up as toasts.
+- **Auth forms:** `inertia/components/auth_form.vue` is a port of Nuxt UI's `UAuthForm` built on the AdonisJS `<Form>` component. It keeps the same look, props (`fields`, `providers`, `submit`...) and slots (`header`, `description`, `<name>-field`, `<name>-error`, `validation`, `submit`, `footer`...), but posts to a named route (`route="session.store"`) with no client-side schema: VineJS errors from the server are shown under the matching fields, and `reset-on-error` clears fields like passwords. Invalid credentials and other flash errors show up as toasts.
 - **Page props:** controllers pass props with `inertia.render('page', props)`, and `npm run typecheck` checks them against each page's `defineProps`. Keep prop types as JSON-friendly `type` aliases (see `inertia/types/dashboard.d.ts`), because interfaces don't satisfy the serializable-props constraint.
 - **Color mode:** handled by `@vueuse/core`'s `useColorMode` (Light/Dark is in the user menu). `resources/views/inertia_layout.edge` applies the saved mode before first paint.
 

@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import * as z from 'zod'
-import { useTemplateRef } from 'vue'
 import { Head } from '@inertiajs/vue3'
-import { Link, useRouter } from '@adonisjs/inertia/vue'
-import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
+import { Link } from '@adonisjs/inertia/vue'
+import type { AuthFormField } from '@nuxt/ui'
 import AuthLayout from '~/layouts/auth.vue'
-import { useInertiaAuthForm, type AuthFormInstance } from '~/composables/use_inertia_auth_form'
+import AuthForm from '~/components/auth_form.vue'
 
 defineOptions({ layout: AuthLayout })
 
+/**
+ * Validation rules live in `signupValidator` (app/validators/user.ts)
+ */
 const fields: AuthFormField[] = [
   {
     name: 'fullName',
@@ -42,56 +43,22 @@ const fields: AuthFormField[] = [
     required: true,
   },
 ]
-
-/**
- * Mirrors `signupValidator` in app/validators/user.ts for instant feedback.
- * The server remains the source of truth (e.g. for the unique email check).
- */
-const schema = z
-  .object({
-    fullName: z
-      .string()
-      .optional()
-      .transform((value) => value || null),
-    email: z.email({ error: 'Invalid email' }),
-    password: z
-      .string({ error: 'Password is required' })
-      .min(8, 'Must be at least 8 characters')
-      .max(32, 'Must be at most 32 characters'),
-    passwordConfirmation: z.string({ error: 'Please confirm your password' }),
-  })
-  .refine((data) => data.password === data.passwordConfirmation, {
-    message: 'Passwords do not match',
-    path: ['passwordConfirmation'],
-  })
-
-type Schema = z.output<typeof schema>
-
-const authForm = useTemplateRef<AuthFormInstance>('authForm')
-const router = useRouter()
-const { processing, visitOptions } = useInertiaAuthForm(authForm)
-
-function submit(event: FormSubmitEvent<Schema>) {
-  router.post({ route: 'new_account.store' }, event.data, visitOptions)
-}
 </script>
 
 <template>
   <Head title="Create an account" />
 
-  <UAuthForm
-    ref="authForm"
-    :schema="schema"
+  <AuthForm
+    route="new_account.store"
     :fields="fields"
-    :loading="processing"
     icon="i-lucide-user-plus"
     title="Create your account"
-    :submit="{ label: 'Create account', block: true }"
-    @submit="submit"
+    :submit="{ label: 'Create account' }"
+    :reset-on-error="['password', 'passwordConfirmation']"
   >
     <template #description>
       Already have an account?
       <Link route="session.create" class="text-primary font-medium">Sign in</Link>.
     </template>
-  </UAuthForm>
+  </AuthForm>
 </template>
