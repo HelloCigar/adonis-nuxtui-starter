@@ -4,10 +4,11 @@ import { compose } from '@adonisjs/core/helpers'
 import { hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
+import { withUuidPrimaryKey } from '#models/shared'
 import Post from '#models/post'
 import Comment from '#models/comment'
 
-export default class User extends compose(UserSchema, withAuthFinder(hash)) {
+export default class User extends compose(UserSchema, withAuthFinder(hash), withUuidPrimaryKey()) {
   @hasMany(() => Post)
   declare posts: HasMany<typeof Post>
 

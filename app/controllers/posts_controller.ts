@@ -30,6 +30,7 @@ export default class PostsController {
           const posts = await Post.query()
             .preload('author')
             .withCount('comments')
+            .orderBy('created_at', 'desc')
             .orderBy('id', 'desc')
             .paginate(page, 10)
 
@@ -79,6 +80,7 @@ export default class PostsController {
             .related('comments')
             .query()
             .preload('author')
+            .orderBy('created_at', 'desc')
             .orderBy('id', 'desc')
 
           return CommentTransformer.transform(comments)

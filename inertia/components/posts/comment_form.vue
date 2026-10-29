@@ -14,11 +14,11 @@ const body = ref('')
 
 /**
  * Placeholder shown by the optimistic update until the server responds.
- * The negative id marks it as pending (dimmed, no delete button).
+ * The `pending-` id marks it as not saved yet (see CommentItem).
  */
 function pendingComment(text: string): Data.Comment {
   return {
-    id: -Date.now(),
+    id: `pending-${Date.now()}`,
     body: text,
     createdAt: new Date().toISOString(),
     postedAt: 'just now',

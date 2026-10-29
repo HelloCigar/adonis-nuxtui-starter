@@ -15,13 +15,13 @@ export class CommentSchema extends BaseModel {
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
   @column()
-  declare postId: number
+  declare postId: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
-  declare userId: number
+  declare userId: string
 }
 
 export class PostSchema extends BaseModel {
@@ -32,13 +32,13 @@ export class PostSchema extends BaseModel {
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
   @column()
   declare title: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
-  declare userId: number
+  declare userId: string
 }
 
 export class UserSchema extends BaseModel {
@@ -51,7 +51,7 @@ export class UserSchema extends BaseModel {
   @column()
   declare fullName: string | null
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
   @column({ serializeAs: null })
   declare password: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })

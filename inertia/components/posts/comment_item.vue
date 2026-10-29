@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex items-start gap-2" :class="{ 'opacity-50': comment.id < 0 }">
+  <div class="flex items-start gap-2" :class="{ 'opacity-50': comment.id.startsWith('pending-') }">
     <UUser
       :name="comment.author?.fullName ?? comment.author?.email"
       :avatar="{ text: comment.author?.initials }"
