@@ -62,6 +62,7 @@
   },
   "dependencies": {
     "@adonisjs/auth": "^10.1.0",
+    "@adonisjs/bouncer": "^4.0.1",
     "@adonisjs/core": "^7.5.2",
     "@adonisjs/cors": "^3.0.0",
     "@adonisjs/inertia": "^5.0.1",
@@ -70,6 +71,7 @@
     "@adonisjs/shield": "^9.0.0",
     "@adonisjs/static": "^2.0.1",
     "@adonisjs/vite": "^6.0.2",
+    "@adonisplus/flow": "^0.5.1",
     "@fontsource-variable/dm-sans": "^5.3.0",
     "@fontsource/dm-mono": "^5.3.0",
     "@inertiajs/core": "^3.7.1",

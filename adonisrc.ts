@@ -2,6 +2,7 @@ import { indexPages } from '@adonisjs/inertia'
 import { indexEntities } from '@adonisjs/core/generators'
 import { defineConfig } from '@adonisjs/core/app'
 import { generateRegistry } from '@tuyau/core/hooks'
+import { indexPolicies } from '@adonisjs/bouncer'
 
 export default defineConfig({
   /*
@@ -30,6 +31,8 @@ export default defineConfig({
     () => import('@adonisjs/lucid/commands'),
     () => import('@adonisjs/session/commands'),
     () => import('@adonisjs/inertia/commands'),
+    () => import('@adonisjs/bouncer/commands'),
+    () => import('@adonisplus/flow/commands')
   ],
 
   /*
@@ -59,6 +62,11 @@ export default defineConfig({
     () => import('@adonisjs/inertia/inertia_provider'),
     () => import('@adonisjs/auth/auth_provider'),
     () => import('#providers/api_provider'),
+    () => import('@adonisjs/bouncer/bouncer_provider'),
+    {
+      file: () => import('@adonisplus/flow/flow_dashboard_provider'),
+      environment: ['web'],
+    }
   ],
 
   /*
@@ -132,6 +140,7 @@ export default defineConfig({
       }),
       indexPages({ framework: 'vue3' }),
       generateRegistry(),
+      indexPolicies()
     ],
     buildStarting: [() => import('@adonisjs/vite/build_hook')],
   },
