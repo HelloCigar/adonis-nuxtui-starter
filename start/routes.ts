@@ -39,6 +39,12 @@ router
     router.get('customers', [controllers.Customers, 'index']).as('customers')
     router.get('notifications', [controllers.Notifications, 'index']).as('notifications')
 
+    router.resource('posts', controllers.Posts).where('id', router.matchers.number())
+    router
+      .shallowResource('posts.comments', controllers.Comments)
+      .only(['store', 'destroy'])
+      .where('id', router.matchers.number())
+
     router
       .group(() => {
         router.on('/').renderInertia('settings/index', {}).as('general')

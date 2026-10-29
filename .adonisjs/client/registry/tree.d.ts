@@ -16,6 +16,19 @@ export interface ApiDefinition {
   inbox: typeof routes['inbox']
   customers: typeof routes['customers']
   notifications: typeof routes['notifications']
+  posts: {
+    index: typeof routes['posts.index']
+    create: typeof routes['posts.create']
+    store: typeof routes['posts.store']
+    show: typeof routes['posts.show']
+    edit: typeof routes['posts.edit']
+    update: typeof routes['posts.update']
+    destroy: typeof routes['posts.destroy']
+    comments: {
+      store: typeof routes['posts.comments.store']
+      destroy: typeof routes['posts.comments.destroy']
+    }
+  }
   settings: {
     general: typeof routes['settings.general']
     members: typeof routes['settings.members']

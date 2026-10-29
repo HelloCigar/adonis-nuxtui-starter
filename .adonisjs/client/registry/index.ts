@@ -3,6 +3,8 @@ import type { AdonisEndpoint } from '@tuyau/core/types'
 import type { Registry } from './schema.d.ts'
 import type { ApiDefinition } from './tree.d.ts'
 
+export type { Route, Path } from './schema.d.ts'
+
 const placeholder: any = {}
 
 const routes = {
@@ -59,6 +61,60 @@ const routes = {
     pattern: '/notifications',
     tokens: [[0,"notifications"]],
     types: placeholder as Registry['notifications']['types'],
+  },
+  'posts.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/posts',
+    tokens: [[0,"posts"]],
+    types: placeholder as Registry['posts.index']['types'],
+  },
+  'posts.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/posts/create',
+    tokens: [[0,"posts"],[0,"create"]],
+    types: placeholder as Registry['posts.create']['types'],
+  },
+  'posts.store': {
+    methods: ["POST"],
+    pattern: '/posts',
+    tokens: [[0,"posts"]],
+    types: placeholder as Registry['posts.store']['types'],
+  },
+  'posts.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/posts/:id',
+    tokens: [[0,"posts"],[1,"id"]],
+    types: placeholder as Registry['posts.show']['types'],
+  },
+  'posts.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/posts/:id/edit',
+    tokens: [[0,"posts"],[1,"id"],[0,"edit"]],
+    types: placeholder as Registry['posts.edit']['types'],
+  },
+  'posts.update': {
+    methods: ["PUT","PATCH"],
+    pattern: '/posts/:id',
+    tokens: [[0,"posts"],[1,"id"]],
+    types: placeholder as Registry['posts.update']['types'],
+  },
+  'posts.destroy': {
+    methods: ["DELETE"],
+    pattern: '/posts/:id',
+    tokens: [[0,"posts"],[1,"id"]],
+    types: placeholder as Registry['posts.destroy']['types'],
+  },
+  'posts.comments.store': {
+    methods: ["POST"],
+    pattern: '/posts/:post_id/comments',
+    tokens: [[0,"posts"],[1,"post_id"],[0,"comments"]],
+    types: placeholder as Registry['posts.comments.store']['types'],
+  },
+  'posts.comments.destroy': {
+    methods: ["DELETE"],
+    pattern: '/comments/:id',
+    tokens: [[0,"comments"],[1,"id"]],
+    types: placeholder as Registry['posts.comments.destroy']['types'],
   },
   'settings.general': {
     methods: ["GET","HEAD"],
