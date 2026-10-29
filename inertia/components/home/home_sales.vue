@@ -49,11 +49,13 @@ const columns: TableColumn<Sale>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
+    meta: { class: { td: 'font-mono' } },
     cell: ({ row }) => `#${row.getValue('id')}`,
   },
   {
     accessorKey: 'date',
     header: 'Date',
+    meta: { class: { td: 'font-mono' } },
     cell: ({ row }) => {
       return new Date(row.getValue('date')).toLocaleString('en-US', {
         day: 'numeric',
@@ -94,7 +96,7 @@ const columns: TableColumn<Sale>[] = [
         currency: 'EUR',
       }).format(amount)
 
-      return h('div', { class: 'text-right font-medium' }, formatted)
+      return h('div', { class: 'text-right font-mono' }, formatted)
     },
   },
 ]

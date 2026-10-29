@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import ui from '@nuxt/ui/vite'
 import adonisjs from '@adonisjs/vite/client'
+import { theme } from './theme.js'
 
 export default defineConfig({
   plugins: [
@@ -21,12 +22,10 @@ export default defineConfig({
           scan: true,
         },
       },
-      ui: {
-        colors: {
-          primary: 'green',
-          neutral: 'zinc',
-        },
-      },
+      /**
+       * Colors and global component overrides, see theme.ts
+       */
+      ui: theme,
       /**
        * Nuxt UI components (UButton, UDashboardPanel...) and composables
        * (useToast, defineShortcuts...) are auto-imported. Your own components

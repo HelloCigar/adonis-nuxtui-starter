@@ -100,6 +100,7 @@ const columns: TableColumn<User>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
+    meta: { class: { td: 'font-mono' } },
   },
   {
     accessorKey: 'name',

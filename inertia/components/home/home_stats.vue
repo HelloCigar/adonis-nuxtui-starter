@@ -91,11 +91,15 @@ watch(
       class="lg:rounded-none first:rounded-l-lg last:rounded-r-lg hover:z-1"
     >
       <div class="flex items-center gap-2">
-        <span class="text-2xl font-semibold text-highlighted">
+        <span class="font-mono text-2xl font-medium text-highlighted">
           {{ stat.value }}
         </span>
 
-        <UBadge :color="stat.variation > 0 ? 'success' : 'error'" variant="subtle" class="text-xs">
+        <UBadge
+          :color="stat.variation > 0 ? 'success' : 'error'"
+          variant="subtle"
+          class="font-mono text-xs"
+        >
           {{ stat.variation > 0 ? '+' : '' }}{{ stat.variation }}%
         </UBadge>
       </div>

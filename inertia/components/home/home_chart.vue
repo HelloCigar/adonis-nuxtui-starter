@@ -58,7 +58,7 @@ const total = computed(() => data.value.reduce((acc: number, { amount }) => acc 
     <template #header>
       <div>
         <p class="text-xs text-muted uppercase mb-1.5">Revenue</p>
-        <p class="text-3xl text-highlighted font-semibold">
+        <p class="font-mono text-3xl text-highlighted font-medium">
           {{ formatNumber(total) }}
         </p>
       </div>

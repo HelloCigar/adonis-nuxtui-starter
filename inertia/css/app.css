@@ -4,21 +4,128 @@
 /* Let Tailwind pick up classes used in Inertia pages, layouts and components */
 @source '../';
 
-@theme static {
-  --font-sans: 'Public Sans', sans-serif;
+/*
+ * Design tokens follow antfu's design system (https://github.com/antfu/design),
+ * mapped onto Nuxt UI's CSS variables so every component picks them up.
+ * Component-level overrides live in `theme.ts`.
+ */
 
-  --color-green-50: oklch(90.98% 0.04338 166.72);
-  --color-green-100: oklch(88.46% 0.05417 166.29);
-  --color-green-200: oklch(83.957% 0.07763 165.13);
-  --color-green-300: oklch(79.343% 0.09927 163.52);
-  --color-green-400: oklch(74.927% 0.11835 162.26);
-  --color-green-500: oklch(70.253% 0.13197 160.37);
-  --color-green-600: oklch(58.426% 0.10793 160.73);
-  --color-green-700: oklch(45.657% 0.08188 161.06);
-  --color-green-800: oklch(32.298% 0.05338 161.83);
-  --color-green-900: oklch(17.276% 0.02184 161.78);
+/*
+ * Fonts (self-hosted with @fontsource, imported in app.ts) and color ramps
+ * (registered as Tailwind colors, assigned in theme.ts)
+ */
+@theme static {
+  --font-sans: 'DM Sans Variable', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* antfu green, the brand color */
+  --color-antfu-50: #f4f9f1;
+  --color-antfu-100: #e6f2e0;
+  --color-antfu-200: #cde4c2;
+  --color-antfu-300: #a8cf96;
+  --color-antfu-400: #7eb267;
+  --color-antfu-500: #5b9544;
+  --color-antfu-600: #49833e;
+  --color-antfu-700: #3b6832;
+  --color-antfu-800: #31532b;
+  --color-antfu-900: #2a4526;
+  --color-antfu-950: #132611;
+
+  --color-antfu-success-50: #ecfdf3;
+  --color-antfu-success-100: #d1fadf;
+  --color-antfu-success-200: #a6f4c5;
+  --color-antfu-success-300: #6ce9a6;
+  --color-antfu-success-400: #32d583;
+  --color-antfu-success-500: #12b76a;
+  --color-antfu-success-600: #039855;
+  --color-antfu-success-700: #027a48;
+  --color-antfu-success-800: #05603a;
+  --color-antfu-success-900: #054f31;
+  --color-antfu-success-950: #03281a;
+
+  --color-antfu-warning-50: #fffaeb;
+  --color-antfu-warning-100: #fef0c7;
+  --color-antfu-warning-200: #fedf89;
+  --color-antfu-warning-300: #fec84b;
+  --color-antfu-warning-400: #fdb022;
+  --color-antfu-warning-500: #f79009;
+  --color-antfu-warning-600: #dc6803;
+  --color-antfu-warning-700: #b54708;
+  --color-antfu-warning-800: #93370d;
+  --color-antfu-warning-900: #7a2e0e;
+  --color-antfu-warning-950: #4e1d09;
+
+  --color-antfu-error-50: #fff1f3;
+  --color-antfu-error-100: #ffe4e8;
+  --color-antfu-error-200: #fecdd6;
+  --color-antfu-error-300: #fea3b4;
+  --color-antfu-error-400: #fd6f8e;
+  --color-antfu-error-500: #f63d68;
+  --color-antfu-error-600: #e31b54;
+  --color-antfu-error-700: #c01048;
+  --color-antfu-error-800: #a11043;
+  --color-antfu-error-900: #89123e;
+  --color-antfu-error-950: #510322;
+}
+
+/*
+ * Semantic tokens. antfu's vocabulary maps onto Nuxt UI's as follows:
+ *   color-base / color-muted / color-faint  -> --ui-text / --ui-text-muted / --ui-text-dimmed
+ *   color-active (primary 600 / 300)        -> --ui-primary
+ *   bg-base (white / #111)                  -> --ui-bg
+ *   bg-hover / bg-active / bg-ambient       -> --ui-bg-muted / --ui-bg-elevated / --ui-bg-accented
+ *   border-mute / border-base               -> --ui-border-muted / --ui-border
+ *
+ * The in-flow surfaces and borders are translucent grays, so nested layers
+ * composite over whatever is behind them and work unchanged in both modes.
+ * Floating and opaque surfaces (menus, modals, slideovers) use --ui-bg.
+ */
+:root {
+  --ui-radius: 0.25rem;
+
+  --ui-primary: var(--ui-color-primary-600);
+
+  --ui-text-dimmed: var(--ui-color-neutral-500);
+  --ui-text-muted: var(--ui-color-neutral-600);
+  --ui-text-toned: var(--ui-color-neutral-700);
+  --ui-text: var(--ui-color-neutral-800);
+  --ui-text-highlighted: var(--ui-color-neutral-900);
+
+  --ui-bg: white;
+  --ui-bg-muted: rgb(153 153 153 / 0.08);
+  --ui-bg-elevated: rgb(153 153 153 / 0.125);
+  --ui-bg-accented: rgb(153 153 153 / 0.15);
+  --ui-bg-inverted: #111;
+
+  --ui-border: rgb(153 153 153 / 0.13);
+  --ui-border-muted: rgb(153 153 153 / 0.07);
+  --ui-border-accented: rgb(153 153 153 / 0.25);
+  --ui-border-inverted: #111;
 }
 
 .dark {
-  --ui-primary: var(--ui-color-primary-500);
+  --ui-primary: var(--ui-color-primary-300);
+
+  --ui-text-dimmed: var(--ui-color-neutral-500);
+  --ui-text-muted: var(--ui-color-neutral-400);
+  --ui-text-toned: var(--ui-color-neutral-300);
+  --ui-text: var(--ui-color-neutral-200);
+  --ui-text-highlighted: var(--ui-color-neutral-100);
+
+  --ui-bg: #111;
+  --ui-bg-inverted: white;
+  --ui-border-inverted: white;
+}
+
+@layer base {
+  /* Thin, unobtrusive scrollbars that follow the theme */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(136 136 136 / 0.35) transparent;
+  }
+
+  /* Numbers, ids and dates don't jitter or misalign */
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
 }

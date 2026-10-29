@@ -14,7 +14,7 @@ watchEffect(() => {
   if (typeof document === 'undefined') return
   document
     .querySelector('meta[name="theme-color"]')
-    ?.setAttribute('content', colorMode.value === 'dark' ? '#18181b' : '#ffffff')
+    ?.setAttribute('content', colorMode.value === 'dark' ? '#111111' : '#ffffff')
 })
 
 useFlashToasts()

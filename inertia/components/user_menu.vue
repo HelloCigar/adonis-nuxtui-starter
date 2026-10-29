@@ -14,6 +14,7 @@ const colorMode = useColorMode()
 const appConfig = useAppConfig()
 
 const colors = [
+  'antfu',
   'red',
   'orange',
   'amber',
