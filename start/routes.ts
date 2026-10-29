@@ -12,12 +12,12 @@ import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
 /**
- * Send visitors to the dashboard when logged in, or to the login page otherwise
+ * Send visitors to the posts feed when logged in, or to the login page otherwise
  */
 router
   .get('/', async ({ auth, response }) => {
     return (await auth.check())
-      ? response.redirect().toRoute('dashboard')
+      ? response.redirect().toRoute('posts.index')
       : response.redirect().toRoute('session.create')
   })
   .as('home')
