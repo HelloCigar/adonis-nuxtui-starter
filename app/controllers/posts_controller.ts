@@ -4,7 +4,12 @@ import PostTransformer from '#transformers/post_transformer'
 import CommentTransformer from '#transformers/comment_transformer'
 import { createPostValidator, updatePostValidator } from '#validators/post'
 import type { HttpContext } from '@adonisjs/core/http'
+import { setTimeout as sleep } from 'node:timers/promises'
 
+/**
+ * The `sleep` calls are artificial delays so the Inertia features are
+ * noticeable on a local SQLite database. Remove them in a real app.
+ */
 export default class PostsController {
   /**
    * Feed of posts, loaded page by page as the user scrolls
@@ -13,11 +18,20 @@ export default class PostsController {
     return inertia.render('posts/index', {
       posts: inertia
         .scroll(async () => {
+          const page = request.input('page', 1)
+
+          /**
+           * Slow down the following pages so the infinite scroll loader shows
+           */
+          if (page > 1) {
+            await sleep(1000)
+          }
+
           const posts = await Post.query()
             .preload('author')
             .withCount('comments')
             .orderBy('id', 'desc')
-            .paginate(request.input('page', 1), 10)
+            .paginate(page, 10)
 
           return PostTransformer.paginate(posts.all(), posts.getMeta())
         })
@@ -26,6 +40,7 @@ export default class PostsController {
   }
 
   async create({ inertia }: HttpContext) {
+    await sleep(1000)
     return inertia.render('posts/create', {})
   }
 
@@ -39,9 +54,15 @@ export default class PostsController {
 
   /**
    * The post renders right away, its comments are deferred and
-   * fetched by the browser after the first paint
+   * fetched by the browser after the first paint.
+   *
+   * Loading the deferred comments, and adding or deleting one, reloads
+   * this action partially, so the 800ms delay applies to those requests
+   * too and keeps the optimistic comment on screen for a while.
    */
   async show({ inertia, params }: HttpContext) {
+    await sleep(800)
+
     const post = await Post.query()
       .where('id', params.id)
       .preload('author')
@@ -52,6 +73,8 @@ export default class PostsController {
       post: PostTransformer.transform(post),
       comments: inertia.defer(
         async () => {
+          await sleep(500)
+
           const comments = await post
             .related('comments')
             .query()
@@ -66,6 +89,8 @@ export default class PostsController {
   }
 
   async edit({ bouncer, inertia, params }: HttpContext) {
+    await sleep(1000)
+
     const post = await Post.query().where('id', params.id).preload('author').firstOrFail()
     await bouncer.with(PostPolicy).authorize('update', post)
 
