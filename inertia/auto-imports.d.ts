@@ -14,11 +14,8 @@ declare global {
   const extractShortcuts: typeof import('../node_modules/@nuxt/ui/dist/runtime/composables/defineShortcuts').extractShortcuts
   const useAppConfig: typeof import('../node_modules/@nuxt/ui/dist/runtime/vue/composables/useAppConfig.js').useAppConfig
   const useContentSearch: typeof import('../node_modules/@nuxt/ui/dist/runtime/composables/useContentSearch').useContentSearch
-  const useDashboard: typeof import('./composables/useDashboard').useDashboard
   const useFileUpload: typeof import('../node_modules/@nuxt/ui/dist/runtime/composables/useFileUpload').useFileUpload
-  const useFlashToasts: typeof import('./composables/useFlashToasts').useFlashToasts
   const useFormField: typeof import('../node_modules/@nuxt/ui/dist/runtime/composables/useFormField').useFormField
-  const useInertiaAuthForm: typeof import('./composables/useInertiaAuthForm').useInertiaAuthForm
   const useKbd: typeof import('../node_modules/@nuxt/ui/dist/runtime/composables/useKbd').useKbd
   const useOverlay: typeof import('../node_modules/@nuxt/ui/dist/runtime/composables/useOverlay').useOverlay
   const useResizable: typeof import('../node_modules/@nuxt/ui/dist/runtime/composables/useResizable').useResizable

@@ -21,6 +21,7 @@ function confirmDelete() {
     route="posts.edit"
     :params="{ id: post.id }"
     instant
+    view-transition
     component="posts/edit"
     :page-props="(_, shared) => ({ ...shared, post })"
   >
@@ -32,6 +33,7 @@ function confirmDelete() {
     v-slot="{ processing }"
     route="posts.destroy"
     :params="{ id: post.id }"
+    :options="{ viewTransition: true }"
     @before="confirmDelete"
   >
     <UButton

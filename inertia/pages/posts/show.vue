@@ -25,7 +25,7 @@ function reloadComments() {
 
   <UPageHeader :title="post.title" :ui="{ links: 'flex-nowrap shrink-0' }">
     <template #headline>
-      <Link route="posts.index" class="flex items-center gap-1 hover:text-default">
+      <Link route="posts.index" view-transition class="flex items-center gap-1 hover:text-default">
         <UIcon name="i-lucide-arrow-left" class="size-4" />
         All posts
       </Link>

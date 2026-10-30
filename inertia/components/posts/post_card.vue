@@ -17,6 +17,7 @@ defineProps<{
     route="posts.show"
     :params="{ id: post.id }"
     instant
+    view-transition
     component="posts/show"
     :page-props="(_, shared) => ({ ...shared, post })"
     class="block"

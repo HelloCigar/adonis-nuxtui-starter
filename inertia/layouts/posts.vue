@@ -13,7 +13,11 @@ const page = usePage()
 <template>
   <UHeader :toggle="false" :ui="{ container: 'max-w-2xl' }">
     <template #left>
-      <Link route="posts.index" class="flex items-center gap-2 text-xl font-bold text-highlighted">
+      <Link
+        route="posts.index"
+        view-transition
+        class="flex items-center gap-2 text-xl font-bold text-highlighted"
+      >
         <UIcon name="i-lucide-newspaper" class="size-5 text-primary" />
         Posts
       </Link>

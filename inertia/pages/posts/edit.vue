@@ -27,7 +27,7 @@ defineProps<{
       <PostFields :errors="errors" :post="post" />
 
       <div class="flex justify-end gap-2">
-        <Link route="posts.show" :params="{ id: post.id }">
+        <Link route="posts.show" :params="{ id: post.id }" view-transition>
           <UButton as="span" label="Cancel" color="neutral" variant="ghost" />
         </Link>
         <UButton type="submit" label="Save" :loading="processing" />

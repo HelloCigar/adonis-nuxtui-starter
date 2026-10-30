@@ -22,6 +22,7 @@ defineProps<{
       <Link
         route="posts.create"
         instant
+        view-transition
         component="posts/create"
         :page-props="(_, shared) => ({ ...shared })"
       >

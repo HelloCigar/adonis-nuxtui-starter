@@ -17,7 +17,7 @@ defineOptions({ layout: PostsLayout })
       <PostFields :errors="errors" />
 
       <div class="flex justify-end gap-2">
-        <Link route="posts.index">
+        <Link route="posts.index" view-transition>
           <UButton as="span" label="Cancel" color="neutral" variant="ghost" />
         </Link>
         <UButton type="submit" label="Publish" :loading="processing" />
