@@ -13,15 +13,25 @@ import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
 /**
- * Send visitors to the posts feed when logged in, or to the login page otherwise
+ * The posts feed is public, so it is the home page for everyone
+ */
+router.on('/').redirect('posts.index').as('home')
+
+/**
+ * Anyone can read posts and their comments. Writing a post, editing or
+ * deleting one, and commenting require an account.
  */
 router
-  .get('/', async ({ auth, response }) => {
-    return (await auth.check())
-      ? response.redirect().toRoute('posts.index')
-      : response.redirect().toRoute('session.create')
-  })
-  .as('home')
+  .resource('posts', controllers.Posts)
+  .where('id', router.matchers.uuid())
+  .use(['create', 'store', 'edit', 'update', 'destroy'], middleware.auth())
+router
+  .shallowResource('posts.comments', controllers.Comments)
+  .only(['store', 'destroy'])
+  .where('post_id', router.matchers.uuid())
+  .where('id', router.matchers.uuid())
+  .use('*', middleware.auth())
+  .use(['store'], commentsThrottle)
 
 router
   .group(() => {
@@ -39,14 +49,6 @@ router
     router.get('inbox', [controllers.Inbox, 'index']).as('inbox')
     router.get('customers', [controllers.Customers, 'index']).as('customers')
     router.get('notifications', [controllers.Notifications, 'index']).as('notifications')
-
-    router.resource('posts', controllers.Posts).where('id', router.matchers.uuid())
-    router
-      .shallowResource('posts.comments', controllers.Comments)
-      .only(['store', 'destroy'])
-      .where('post_id', router.matchers.uuid())
-      .where('id', router.matchers.uuid())
-      .use(['store'], commentsThrottle)
 
     router
       .group(() => {

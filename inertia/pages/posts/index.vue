@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, usePage } from '@inertiajs/vue3'
 import { Link } from '@adonisjs/inertia/vue'
 import type { Scroll } from '@adonisjs/inertia/types'
 import type { Data } from '@generated/data'
@@ -11,6 +11,8 @@ defineOptions({ layout: PostsLayout })
 defineProps<{
   posts: Scroll<Data.Post>
 }>()
+
+const page = usePage()
 </script>
 
 <template>
@@ -20,6 +22,7 @@ defineProps<{
     <template #links>
       <!-- Instant visit: the empty form renders before the server answers -->
       <Link
+        v-if="page.props.user"
         route="posts.create"
         instant
         view-transition

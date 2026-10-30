@@ -26,23 +26,34 @@ const page = usePage()
     <template #right>
       <UColorModeButton />
 
-      <UUser
-        v-if="page.props.user"
-        :name="page.props.user.fullName ?? page.props.user.email"
-        :avatar="{ text: page.props.user.initials }"
-        size="sm"
-        class="hidden sm:flex"
-      />
-
-      <Form route="session.destroy">
-        <UButton
-          type="submit"
-          icon="i-lucide-log-out"
-          color="neutral"
-          variant="ghost"
-          aria-label="Log out"
+      <template v-if="page.props.user">
+        <UUser
+          :name="page.props.user.fullName ?? page.props.user.email"
+          :avatar="{ text: page.props.user.initials }"
+          size="sm"
+          class="hidden sm:flex"
         />
-      </Form>
+
+        <Form route="session.destroy">
+          <UButton
+            type="submit"
+            icon="i-lucide-log-out"
+            color="neutral"
+            variant="ghost"
+            aria-label="Log out"
+          />
+        </Form>
+      </template>
+
+      <!-- Guests can read everything; writing needs an account -->
+      <template v-else>
+        <Link route="session.create">
+          <UButton as="span" label="Sign in" color="neutral" variant="ghost" />
+        </Link>
+        <Link route="new_account.create">
+          <UButton as="span" label="Sign up" />
+        </Link>
+      </template>
     </template>
   </UHeader>
 

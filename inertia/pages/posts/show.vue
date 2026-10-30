@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Deferred, Head, router } from '@inertiajs/vue3'
+import { Deferred, Head, router, usePage } from '@inertiajs/vue3'
 import { Link } from '@adonisjs/inertia/vue'
 import type { Data } from '@generated/data'
 import PostsLayout from '~/layouts/posts.vue'
@@ -14,6 +14,8 @@ defineProps<{
   post: Data.Post
   comments?: Data.Comment[]
 }>()
+
+const page = usePage()
 
 function reloadComments() {
   router.reload({ only: ['comments'] })
@@ -52,7 +54,11 @@ function reloadComments() {
     <section class="flex flex-col gap-4">
       <h2 class="font-semibold text-highlighted">Comments</h2>
 
-      <CommentForm :post="post" :comments="comments" />
+      <CommentForm v-if="page.props.user" :post="post" :comments="comments" />
+      <p v-else class="text-sm text-muted">
+        <Link route="session.create" class="font-medium text-primary">Sign in</Link>
+        to join the conversation.
+      </p>
 
       <!-- Deferred props: the comments are fetched after the post has rendered -->
       <Deferred data="comments">
