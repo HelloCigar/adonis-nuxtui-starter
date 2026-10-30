@@ -2,24 +2,42 @@ import Post from '#models/post'
 import PostPolicy from '#policies/post_policy'
 import PostTransformer from '#transformers/post_transformer'
 import CommentTransformer from '#transformers/comment_transformer'
-import { createPostValidator, updatePostValidator } from '#validators/post'
+import { createPostValidator, listPostsValidator, updatePostValidator } from '#validators/post'
 import type { HttpContext } from '@adonisjs/core/http'
 import { setTimeout as sleep } from 'node:timers/promises'
 
 /**
  * The `sleep` calls are artificial delays so the Inertia features are
- * noticeable on a local SQLite database. Remove them in a real app.
+ * noticeable on a local database. Remove them in a real app.
  */
 export default class PostsController {
   /**
-   * Feed of posts, loaded page by page as the user scrolls
+   * Feed of posts, browsed with infinite scroll (the default) or with
+   * numbered pages (`?view=paginated`)
    */
   async index({ inertia, request }: HttpContext) {
+    const { view = 'infinite', page = 1 } = await request.validateUsing(listPostsValidator)
+
+    const feed = () =>
+      Post.query()
+        .preload('author')
+        .withCount('comments')
+        .orderBy('created_at', 'desc')
+        .orderBy('id', 'desc')
+
+    if (view === 'paginated') {
+      const posts = await feed().paginate(page, 10)
+
+      return inertia.render('posts/index', {
+        view,
+        paginatedPosts: PostTransformer.paginate(posts.all(), posts.getMeta()),
+      })
+    }
+
     return inertia.render('posts/index', {
+      view,
       posts: inertia
         .scroll(async () => {
-          const page = request.input('page', 1)
-
           /**
            * Slow down the following pages so the infinite scroll loader shows
            */
@@ -27,13 +45,7 @@ export default class PostsController {
             await sleep(1000)
           }
 
-          const posts = await Post.query()
-            .preload('author')
-            .withCount('comments')
-            .orderBy('created_at', 'desc')
-            .orderBy('id', 'desc')
-            .paginate(page, 10)
-
+          const posts = await feed().paginate(page, 10)
           return PostTransformer.paginate(posts.all(), posts.getMeta())
         })
         .matchOn('id'),

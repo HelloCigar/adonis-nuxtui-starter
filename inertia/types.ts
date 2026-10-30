@@ -12,3 +12,21 @@ declare module '@inertiajs/core' {
     flashDataType: Data.FlashMessages
   }
 }
+
+/**
+ * Shape of a prop built with `Transformer.paginate(rows, paginator.getMeta())`
+ */
+export type Paginated<T> = {
+  data: T[]
+  metadata: {
+    total: number
+    perPage: number
+    currentPage: number
+    lastPage: number
+    firstPage: number
+    firstPageUrl: string
+    lastPageUrl: string
+    nextPageUrl: string | null
+    previousPageUrl: string | null
+  }
+}
