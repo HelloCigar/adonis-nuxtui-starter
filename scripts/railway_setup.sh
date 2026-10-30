@@ -78,6 +78,7 @@ railway variable set --service "$SERVICE" --skip-deploys \
   "LOG_LEVEL=info" \
   "APP_KEY=$APP_KEY" \
   "SESSION_DRIVER=cookie" \
+  "LIMITER_STORE=database" \
   'DB_HOST=${{Postgres.PGHOST}}' \
   'DB_PORT=${{Postgres.PGPORT}}' \
   'DB_USER=${{Postgres.PGUSER}}' \

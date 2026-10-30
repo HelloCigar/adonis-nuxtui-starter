@@ -1,4 +1,5 @@
 import app from '@adonisjs/core/services/app'
+import { errors as limiterErrors } from '@adonisjs/limiter'
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
@@ -30,6 +31,16 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
+    /**
+     * An Inertia form cannot render the plain-text 429 response, so send the
+     * rate limit message back as a flash toast instead. Other clients keep
+     * the 429 status and rate limit headers.
+     */
+    if (error instanceof limiterErrors.E_TOO_MANY_REQUESTS && ctx.request.header('x-inertia')) {
+      ctx.session.flash('error', error.getResponseMessage(ctx))
+      return ctx.response.redirect().back()
+    }
+
     return super.handle(error, ctx)
   }
 

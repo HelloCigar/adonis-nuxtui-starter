@@ -8,6 +8,7 @@
 */
 
 import { middleware } from '#start/kernel'
+import { commentsThrottle } from '#start/limiter'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
@@ -45,6 +46,7 @@ router
       .only(['store', 'destroy'])
       .where('post_id', router.matchers.uuid())
       .where('id', router.matchers.uuid())
+      .use(['store'], commentsThrottle)
 
     router
       .group(() => {
