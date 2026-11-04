@@ -27,7 +27,9 @@ Open http://localhost:3333, create an account, and you land on the dashboard.
 | `npm run dev`       | Start the dev server with HMR                                                          |
 | `npm run build`     | Build for production into `build/`                                                     |
 | `npm run typecheck` | Type-check the backend (`tsc`) and frontend (`vue-tsc`)                                |
-| `npm run lint`      | Lint with the AdonisJS ESLint config                                                   |
+| `npm run lint`      | Lint with Oxlint through Vite+ (`vp lint`), rules in `vite.config.ts`                  |
+| `npm run format`    | Format with Oxfmt through Vite+ (`vp fmt`)                                             |
+| `npm run check`     | Format check, lint and type-aware checks (`vp check`), then `vue-tsc` for `.vue` files |
 | `node ace codegen`  | Regenerate `.adonisjs/` types (routes, pages, controllers) without starting the server |
 
 ## Project layout
@@ -61,6 +63,7 @@ theme.ts                Nuxt UI colors and global component overrides (used by v
 - **Auth forms:** `inertia/components/auth_form.vue` is a port of Nuxt UI's `UAuthForm` built on the AdonisJS `<Form>` component. It keeps the same look, props (`fields`, `providers`, `submit`...) and slots (`header`, `description`, `<name>-field`, `<name>-error`, `validation`, `submit`, `footer`...), but posts to a named route (`route="session.store"`) with no client-side schema: VineJS errors from the server are shown under the matching fields, and `reset-on-error` clears fields like passwords. Invalid credentials and other flash errors show up as toasts.
 - **Page props:** controllers pass props with `inertia.render('page', props)`, and `npm run typecheck` checks them against each page's `defineProps`. Keep prop types as JSON-friendly `type` aliases (see `inertia/types/dashboard.d.ts`), because interfaces don't satisfy the serializable-props constraint.
 - **Theme:** the UI follows [antfu's design system](https://github.com/antfu/design) and is applied entirely through Nuxt UI theming, so components need no one-off classes. `inertia/css/app.css` registers the antfu green ramp and DM Sans / DM Mono (self-hosted with `@fontsource`), and maps antfu's semantic tokens onto Nuxt UI's CSS variables: translucent gray surfaces and borders that work in both modes, mostly muted text, `#111` dark background, and a 4px radius. `theme.ts` assigns the semantic colors (`primary: 'antfu'`...) and sets global slot overrides, such as frosted-glass menus, popovers and tooltips. Numbers, ids and dates use `font-mono`, which also turns on tabular figures. To rebrand, edit the ramp and tokens in `app.css` or point `colors.primary` at another Tailwind color.
+- **Vite+:** the toolchain is [Vite+](https://viteplus.dev). `vite` resolves to Vite+'s core, and `vite.config.ts` uses `defineConfig` from `vite-plus` with `lint` (Oxlint) and `fmt` (Oxfmt) blocks. AdonisJS still owns the dev server and build (`node ace serve`, `node ace build`), and tests run with Japa (`node ace test`), not `vp test`. Oxlint does not parse Vue templates yet, so `vue-tsc` stays in `typecheck` and `check` to catch template errors.
 - **Color mode:** handled by `@vueuse/core`'s `useColorMode` (Light/Dark is in the user menu). `resources/views/inertia_layout.edge` applies the saved mode before first paint.
 
 ## Database
