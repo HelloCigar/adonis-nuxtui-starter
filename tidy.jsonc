@@ -1,0 +1,15 @@
+// https://tidy.lukeed.com/docs/configuration/
+{
+  "$schema": "https://tidy.lukeed.com/2.0.0/schema.json",
+  "width": 100,
+  "tabs": false,
+  "quote": "single",
+  "bracketSpacing": true,
+  "js": {
+    "trailingComma": "es5",
+    "semi": false,
+    "quoteProps": "consistent",
+    "arrowParens": "always",
+    "jsdoc": false,
+  },
+}
