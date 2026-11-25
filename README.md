@@ -27,7 +27,7 @@ Open http://localhost:3333, create an account, and you land on the dashboard.
 | `npm run dev`       | Start the dev server with HMR                                                          |
 | `npm run build`     | Build for production into `build/`                                                     |
 | `npm run typecheck` | Type-check the backend (`tsc`) and frontend (`vue-tsc`)                                |
-| `npm run lint`      | Lint with oxlint and check formatting with Tidy                                        |
+| `npm run lint`      | Lint with oxlint (Vue templates via oxlint-plugin-vize) and check formatting with Tidy |
 | `npm run format`    | Format everything with Tidy                                                            |
 | `node ace codegen`  | Regenerate `.adonisjs/` types (routes, pages, controllers) without starting the server |
 
