@@ -1,0 +1,16 @@
+{
+  "agents": [
+    "claude"
+  ],
+  "stack": "vue",
+  "packages": [
+    "@adonisjs/auth",
+    "@adonisjs/core",
+    "@adonisjs/inertia",
+    "@adonisjs/lucid",
+    "@adonisjs/session",
+    "@vinejs/vine",
+    "edge.js"
+  ],
+  "exclude": []
+}

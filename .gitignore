@@ -24,3 +24,7 @@ yarn-error.log
 
 # Platform specific
 .DS_Store
+.flow/docs/
+.flow/lenses/
+.claude/skills/flow-*
+.claude/agents/flow-*
