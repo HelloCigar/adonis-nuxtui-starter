@@ -36,7 +36,7 @@ Open http://localhost:3333, create an account, and you land on the dashboard.
 
 Browser tests in `tests/browser/` drive the real pages with Playwright through `@japa/browser-client`. They use their own SQLite file (`tmp/db.test.sqlite3`), migrated at the start of each run, so they never touch your development database. Install Chromium once with `npx playwright install chromium`, then run `npm test` (or `node ace test browser` for that suite alone).
 
-CI (`.github/workflows/ci.yml`) runs the typecheck, oxlint and the tests on every pull request and on pushes to `main`. It needs an `ADONISPLUS_TOKEN` repository secret to install `@adonisplus/flow` from the AdonisJS Plus registry.
+CI (`.github/workflows/ci.yml`) runs the typecheck, lint (oxlint and Tidy) and the tests on every pull request and on pushes to `main`. It needs an `ADONISPLUS_TOKEN` repository secret to install `@adonisplus/flow` from the AdonisJS Plus registry.
 
 ## Project layout
 
