@@ -1,10 +1,8 @@
-import DemoMembersService from '#services/demo/members'
-import { inject } from '@adonisjs/core'
+import { getMembers } from '#services/demo/members'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class MembersController {
-  @inject()
-  async index({ inertia }: HttpContext, members: DemoMembersService) {
-    return inertia.render('settings/members', { members: members.all() })
+  async index({ inertia }: HttpContext) {
+    return inertia.render('settings/members', { members: getMembers() })
   }
 }
