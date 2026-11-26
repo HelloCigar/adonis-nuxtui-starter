@@ -33,6 +33,8 @@ test.group('Auth / login and logout', (group) => {
 
     await page.assertTextContains('body', 'Invalid user credentials')
     await page.assertPath(route('session.create'))
+    await page.assertInputValue('input[name="email"]', 'ada@example.com')
+    await page.assertInputValue('input[name="password"]', '')
 
     const dashboard = await visit(route('dashboard'))
     await dashboard.assertPath(route('session.create'))
