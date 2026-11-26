@@ -9,11 +9,11 @@ test.group('Auth / signup', (group) => {
   test('a visitor creates an account and lands on the dashboard', async ({ visit, assert }) => {
     const page = await visit('/signup')
 
-    await page.getByLabel('Full name').fill('Ada Lovelace')
-    await page.getByLabel('Email').fill('ada@example.com')
+    await page.getByLabel('Full name', { exact: true }).fill('Ada Lovelace')
+    await page.getByLabel('Email', { exact: true }).fill('ada@example.com')
     await page.getByLabel('Password', { exact: true }).fill('secret-password')
-    await page.getByLabel('Confirm password').fill('secret-password')
-    await page.getByRole('button', { name: 'Create account' }).click()
+    await page.getByLabel('Confirm password', { exact: true }).fill('secret-password')
+    await page.getByRole('button', { name: 'Create account', exact: true }).click()
 
     await page.assertPath('/dashboard')
     await page.assertTitleContains('Home')
@@ -29,10 +29,10 @@ test.group('Auth / signup', (group) => {
 
     const page = await visit('/signup')
 
-    await page.getByLabel('Email').fill('ada@example.com')
+    await page.getByLabel('Email', { exact: true }).fill('ada@example.com')
     await page.getByLabel('Password', { exact: true }).fill('another-password')
-    await page.getByLabel('Confirm password').fill('another-password')
-    await page.getByRole('button', { name: 'Create account' }).click()
+    await page.getByLabel('Confirm password', { exact: true }).fill('another-password')
+    await page.getByRole('button', { name: 'Create account', exact: true }).click()
 
     await page.assertTextContains('body', 'The email has already been taken')
     await page.assertPath('/signup')
@@ -44,10 +44,10 @@ test.group('Auth / signup', (group) => {
   test('signup is rejected when the passwords do not match', async ({ visit, assert }) => {
     const page = await visit('/signup')
 
-    await page.getByLabel('Email').fill('ada@example.com')
+    await page.getByLabel('Email', { exact: true }).fill('ada@example.com')
     await page.getByLabel('Password', { exact: true }).fill('secret-password')
-    await page.getByLabel('Confirm password').fill('other-password')
-    await page.getByRole('button', { name: 'Create account' }).click()
+    await page.getByLabel('Confirm password', { exact: true }).fill('other-password')
+    await page.getByRole('button', { name: 'Create account', exact: true }).click()
 
     await page.assertTextContains('body', 'must be the same')
     await page.assertPath('/signup')

@@ -14,9 +14,9 @@ test.group('Auth / login and logout', (group) => {
 
     const page = await visit('/login')
 
-    await page.getByLabel('Email').fill('ada@example.com')
+    await page.getByLabel('Email', { exact: true }).fill('ada@example.com')
     await page.getByLabel('Password', { exact: true }).fill('secret-password')
-    await page.getByRole('button', { name: 'Sign in' }).click()
+    await page.getByRole('button', { name: 'Sign in', exact: true }).click()
 
     await page.assertPath('/dashboard')
     await page.assertTextContains('body', 'Ada Lovelace')
@@ -27,9 +27,9 @@ test.group('Auth / login and logout', (group) => {
 
     const page = await visit('/login')
 
-    await page.getByLabel('Email').fill('ada@example.com')
+    await page.getByLabel('Email', { exact: true }).fill('ada@example.com')
     await page.getByLabel('Password', { exact: true }).fill('wrong-password')
-    await page.getByRole('button', { name: 'Sign in' }).click()
+    await page.getByRole('button', { name: 'Sign in', exact: true }).click()
 
     await page.assertTextContains('body', 'Invalid user credentials')
     await page.assertPath('/login')
@@ -41,9 +41,9 @@ test.group('Auth / login and logout', (group) => {
   test('sign in is refused for an unknown email', async ({ visit }) => {
     const page = await visit('/login')
 
-    await page.getByLabel('Email').fill('nobody@example.com')
+    await page.getByLabel('Email', { exact: true }).fill('nobody@example.com')
     await page.getByLabel('Password', { exact: true }).fill('secret-password')
-    await page.getByRole('button', { name: 'Sign in' }).click()
+    await page.getByRole('button', { name: 'Sign in', exact: true }).click()
 
     await page.assertTextContains('body', 'Invalid user credentials')
     await page.assertPath('/login')
@@ -58,8 +58,8 @@ test.group('Auth / login and logout', (group) => {
     await browserContext.loginAs(user)
 
     const page = await visit('/dashboard')
-    await page.getByRole('button', { name: 'Ada Lovelace' }).first().click()
-    await page.getByRole('menuitem', { name: 'Log out' }).click()
+    await page.getByRole('button', { name: 'Ada Lovelace', exact: false }).first().click()
+    await page.getByRole('menuitem', { name: 'Log out', exact: true }).click()
 
     await page.assertPath('/login')
 
