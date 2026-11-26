@@ -8,7 +8,7 @@ A full-stack starter built from the official [AdonisJS](https://docs.adonisjs.co
 
 ## Getting started
 
-Requires Node.js 24 or later.
+Requires Node.js 24 or later, and the [Tidy](https://tidy.lukeed.com/docs/install/) formatter on your `PATH` for `npm run lint` and `npm run format` (`cargo binstall tidy`, or see its install docs).
 
 ```sh
 npm install
@@ -27,7 +27,8 @@ Open http://localhost:3333, create an account, and you land on the dashboard.
 | `npm run dev`       | Start the dev server with HMR                                                          |
 | `npm run build`     | Build for production into `build/`                                                     |
 | `npm run typecheck` | Type-check the backend (`tsc`) and frontend (`vue-tsc`)                                |
-| `npm run lint`      | Lint with the AdonisJS ESLint config                                                   |
+| `npm run lint`      | Lint with oxlint (Vue templates via oxlint-plugin-vize) and check formatting with Tidy |
+| `npm run format`    | Format everything with Tidy                                                            |
 | `node ace codegen`  | Regenerate `.adonisjs/` types (routes, pages, controllers) without starting the server |
 
 ## Project layout
