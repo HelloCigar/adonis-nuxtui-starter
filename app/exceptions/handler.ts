@@ -1,4 +1,5 @@
 import app from '@adonisjs/core/services/app'
+import { errors as authErrors } from '@adonisjs/auth'
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
@@ -30,6 +31,17 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
+    /**
+     * Report failed logins as a form error on the email field instead of
+     * a flash toast, so the login form treats the submission as failed
+     * (and clears the password). The message stays generic, so it never
+     * reveals whether the email or the password was wrong.
+     */
+    if (error instanceof authErrors.E_INVALID_CREDENTIALS) {
+      ctx.session.flashInputErrors({ email: error.getResponseMessage(error, ctx) })
+      return ctx.response.redirect().back()
+    }
+
     return super.handle(error, ctx)
   }
 

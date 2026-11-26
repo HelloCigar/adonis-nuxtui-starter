@@ -16,9 +16,10 @@ const dbConfig = defineConfig({
 
       connection: {
         /**
-         * Database file location.
+         * Database file location. Tests use their own file so a test run
+         * never wipes the development database.
          */
-        filename: app.tmpPath('db.sqlite3'),
+        filename: app.tmpPath(app.inTest ? 'db.test.sqlite3' : 'db.sqlite3'),
       },
 
       /**

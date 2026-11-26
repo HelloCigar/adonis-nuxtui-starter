@@ -26,10 +26,17 @@ Open http://localhost:3333, create an account, and you land on the dashboard.
 | ------------------- | -------------------------------------------------------------------------------------- |
 | `npm run dev`       | Start the dev server with HMR                                                          |
 | `npm run build`     | Build for production into `build/`                                                     |
+| `npm test`          | Run the Japa test suites (browser tests drive the app in headless Chromium)            |
 | `npm run typecheck` | Type-check the backend (`tsc`) and frontend (`vue-tsc`)                                |
 | `npm run lint`      | Lint with oxlint (Vue templates via oxlint-plugin-vize) and check formatting with Tidy |
 | `npm run format`    | Format everything with Tidy                                                            |
 | `node ace codegen`  | Regenerate `.adonisjs/` types (routes, pages, controllers) without starting the server |
+
+## Tests
+
+Browser tests in `tests/browser/` drive the real pages with Playwright through `@japa/browser-client`. They use their own SQLite file (`tmp/db.test.sqlite3`), migrated at the start of each run, so they never touch your development database. Install Chromium once with `npx playwright install chromium`, then run `npm test` (or `node ace test browser` for that suite alone).
+
+CI (`.github/workflows/ci.yml`) runs the typecheck, lint (oxlint and Tidy) and the tests on every pull request and on pushes to `main`. It needs an `ADONISPLUS_TOKEN` repository secret to install `@adonisplus/flow` from the AdonisJS Plus registry.
 
 ## Project layout
 

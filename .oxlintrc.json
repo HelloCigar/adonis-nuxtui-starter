@@ -95,6 +95,7 @@
     }
   },
   "ignorePatterns": [
+    "app/services/demo/**",
     "*.min.*",
     "*.d.ts",
     "CHANGELOG.md",
