@@ -9,7 +9,11 @@ import { type SimplePaginatorMetaKeys } from '@adonisjs/lucid/types/querybuilder
  */
 class ApiSerializer extends BaseSerializer<{
   Wrap: 'data'
-  PaginationMetaData: SimplePaginatorMetaKeys
+  /**
+   * Lucid also emits `pageName`, but `isLucidPaginatorMetaData` does not
+   * check for it, so it is left out of the typed metadata.
+   */
+  PaginationMetaData: Omit<SimplePaginatorMetaKeys, 'pageName'>
 }> {
   /**
    * Wraps all serialized data under this key in the response object.
@@ -23,7 +27,7 @@ class ApiSerializer extends BaseSerializer<{
    *
    * @throws Error if metadata doesn't match Lucid's pagination structure
    */
-  definePaginationMetaData(metaData: unknown): SimplePaginatorMetaKeys {
+  definePaginationMetaData(metaData: unknown): Omit<SimplePaginatorMetaKeys, 'pageName'> {
     if (!this.isLucidPaginatorMetaData(metaData)) {
       throw new Error(
         'Invalid pagination metadata. Expected metadata to contain Lucid pagination keys'
