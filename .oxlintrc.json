@@ -328,6 +328,20 @@
       "rules": {
         "typescript/consistent-type-imports": "off"
       }
+    },
+    {
+      "files": ["**/*.ts"],
+      "jsPlugins": [{ "name": "flow", "specifier": "./oxlint-flow-rules.js" }],
+      "rules": {
+        "flow/exported-functions-are-factories": "error",
+        "flow/no-private-controller-methods": "error",
+        "flow/no-shared-mutable-test-state": "error",
+        "flow/no-top-level-functions": "error",
+        "flow/playwright-locators-are-exact": "error",
+        "flow/test-files-contain-tests": "error",
+        "flow/test-helpers-contain-runtime-code": "error",
+        "flow/types-live-in-types-directory": "error"
+      }
     }
   ]
 }

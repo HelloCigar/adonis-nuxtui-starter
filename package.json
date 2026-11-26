@@ -38,8 +38,10 @@
   },
   "devDependencies": {
     "@adonisjs/assembler": "^8.5.2",
+    "@adonisjs/eslint-ast-grep": "^1.0.0",
     "@adonisjs/eslint-plugin": "^2.2.2",
     "@adonisjs/tsconfig": "^2.0.0",
+    "@adonisplus/flow": "^1.1.0",
     "@iconify-json/lucide": "^1.2.147",
     "@japa/assert": "^4.2.0",
     "@japa/browser-client": "^2.3.0",
