@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # @adonisplus/flow is installed from the private AdonisJS Plus registry (see .npmrc)
+  ADONISPLUS_TOKEN: ${{ secrets.ADONISPLUS_TOKEN }}
+
+jobs:
+  checks:
+    name: Typecheck and lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Authenticate to the AdonisJS Plus registry
+        run: |
+          if [ -z "$ADONISPLUS_TOKEN" ]; then
+            echo "::error::Add an ADONISPLUS_TOKEN repository secret so npm can install @adonisplus/flow"
+            exit 1
+          fi
+          npm config set //plus.adonisjs.com/registry/:_authToken "$ADONISPLUS_TOKEN"
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npx oxlint-vize
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Authenticate to the AdonisJS Plus registry
+        run: |
+          if [ -z "$ADONISPLUS_TOKEN" ]; then
+            echo "::error::Add an ADONISPLUS_TOKEN repository secret so npm can install @adonisplus/flow"
+            exit 1
+          fi
+          npm config set //plus.adonisjs.com/registry/:_authToken "$ADONISPLUS_TOKEN"
+
+      - run: npm ci
+
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Create the environment file
+        run: |
+          cp .env.example .env
+          node ace generate:key
+
+      - name: Run tests
+        run: node ace test
