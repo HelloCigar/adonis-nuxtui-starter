@@ -1,8 +1,10 @@
-import { getCustomers } from '#services/demo/customers'
+import DemoCustomersService from '#services/demo/customers'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CustomersController {
-  async index({ inertia }: HttpContext) {
-    return inertia.render('customers', { customers: getCustomers() })
+  @inject()
+  async index({ inertia }: HttpContext, customers: DemoCustomersService) {
+    return inertia.render('customers', { customers: customers.all() })
   }
 }
