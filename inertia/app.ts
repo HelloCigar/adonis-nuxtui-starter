@@ -6,7 +6,7 @@ import ui from '@nuxt/ui/vue-plugin'
 import { client } from '~/client'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { TuyauProvider } from '@adonisjs/inertia/vue'
-import { createApp, type DefineComponent, h } from 'vue'
+import { createApp, createSSRApp, type DefineComponent, h } from 'vue'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import Root from '~/root.vue'
 
@@ -21,7 +21,13 @@ createInertiaApp({
     )
   },
   setup({ el, App, props, plugin }) {
-    createApp({
+    /**
+     * With SSR enabled in config/inertia.ts, hydrate the server-rendered markup
+     * instead of rendering the page again.
+     */
+    const createVueApp = el.hasAttribute('data-server-rendered') ? createSSRApp : createApp
+
+    createVueApp({
       render: () =>
         h(TuyauProvider, { client }, { default: () => h(Root, null, () => h(App, props)) }),
     })
