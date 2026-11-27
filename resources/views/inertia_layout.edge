@@ -31,7 +31,10 @@
   </head>
 
   <body>
-    @inertia({ class: 'isolate' })
+    {{-- The wrapper holds Nuxt UI's isolate class: @inertia drops its class on server-rendered pages --}}
+    <div class="isolate">
+      @inertia()
+    </div>
   </body>
 
 </html>
